@@ -1,14 +1,14 @@
 from os import getcwd
 from time import time
 from pathlib import Path
-from requests import get
-
+from requests import Session
 
 class DiceBearAvatars:
 	def __init__(self) -> None:
 		self.api = "https://avatars.dicebear.com/api"
-		self.headers = {
-			"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+		self.session = Session()
+		self.session.headers = {
+			"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
 		}
 	
 	def save_file(
@@ -17,11 +17,9 @@ class DiceBearAvatars:
 			content: bytes,
 			location: str = getcwd()) -> bool:
 		with open(
-			Path(location).joinpath(f"{time() * 1000}.{format}"),
-		mode="wb+",
-		) as file:
-			file.write(content)
-			file.close()
+			Path(location).joinpath(f"{time() * 1000}.{format}"), mode="wb+") as file:
+				file.write(content)
+				file.close()
 		return True
 
 	def get_avatar(
@@ -34,8 +32,4 @@ class DiceBearAvatars:
 		url = f"{self.api}/{sprite}/{seed}.{format}?mood[]={mood}"
 		if background:
 			url += f"&background={background}"
-		return self.save_file(
-				format,
-				get(
-					url, headers=self.headers).content)
-
+		return self.save_file(format, self.session.get(url).content)
