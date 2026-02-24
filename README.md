@@ -3,7 +3,9 @@ Web-API for [avatars.dicebear.com](https://avatars.dicebear.com) an avatar libra
 
 ## Example
 ```python
-import dicebear_avatars
-dicebear_avatars = dicebear_avatars.DiceBearAvatars()
-dicebear_avatars.get_avatar(sprite="", seed="",  background="", mood="", format="")
+from dicebear_avatars import DiceBearAvatars
+
+db_avatars = DiceBearAvatars()
+db_avatars.get_avatar(
+  sprite="", seed="",  background="", mood="", format="")
 ```
